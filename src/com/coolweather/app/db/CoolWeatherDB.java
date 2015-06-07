@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CoolWeatherDB {
 	/**
@@ -120,6 +121,7 @@ public class CoolWeatherDB {
 	 * 从数据库中读取某城市下的所有县区
 	 */
 	public List<County> loadCounties(int cityId){
+		Log.i("CoolWeather", "数据库中读取某城市下的所有县区............");
 		List<County> list = new ArrayList<County>();
 		Cursor cursor = db.query("County", null, "city_id = ?", new String[]{String.valueOf(cityId)}, null, null, null);
 		if(cursor.moveToFirst()){
@@ -128,8 +130,9 @@ public class CoolWeatherDB {
 				county.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
 				county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
-				county.setCityId(cursor.getString(cursor.getColumnIndex("city_id")));
+				county.setCityId(cursor.getInt(cursor.getColumnIndex("city_id")));
 				list.add(county);
+				Log.i("CoolWeather", "读取某城市下的所有县区............"+county.getCountyName());
 			} while (cursor.moveToNext());
 		}
 		if(cursor != null){
